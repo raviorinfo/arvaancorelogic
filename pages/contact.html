@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Contact Arvaan Core Logic — Schedule a consultation, get a project quote, or just say hello."/>
+  <title>Contact Us — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/contact.css?v=2.7"/>
+</head>
+<body data-page="contact">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- PAGE HERO -->
+<section class="page-hero contact-hero">
+  <div class="container">
+    <div class="page-hero-eyebrow"><span class="section-tag">Let's Talk</span></div>
+    <h1 class="page-hero-title">Start Your <span class="gradient-text">Next Project</span><br/>With Us Today</h1>
+    <p class="page-hero-sub">Whether you're starting fresh, modernising legacy systems, or scaling fast — we'd love to hear about your challenge. Free initial consultation, no commitment required.</p>
+    <div class="contact-meta-badges">
+      <div class="cmb-item"><div class="cmb-dot"></div>Available Now</div>
+      <div class="cmb-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Response within 2 hours</div>
+      <div class="cmb-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>100% NDA Protected</div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTACT SECTION -->
+<section class="section contact-main" style="background:var(--bg);">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- FORM -->
+      <div class="contact-form-col reveal-left">
+        <h2 class="cf-title">Send Us a <span class="gradient-text">Message</span></h2>
+        <p class="cf-sub">Fill in the details below and our team will get back to you within 2 business hours.</p>
+
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Full Name <span class="req">*</span></label>
+              <input type="text" id="fname" name="fname" placeholder="John Smith" required autocomplete="name"/>
+            </div>
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" name="company" placeholder="Acme Corp" autocomplete="organization"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Company Email <span class="req">*</span></label>
+              <input type="email" id="email" name="email" placeholder="john@company.com" required autocomplete="email"/>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone (Optional)</label>
+              <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" autocomplete="tel"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="service">Service Needed <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="service" name="service" required>
+                <option value="" disabled selected>Select a service...</option>
+                <option value="enterprise">Enterprise Software Development</option>
+                <option value="automation">QA &amp; Software Testing</option>
+                <option value="cloud">Cloud &amp; Infrastructure Solutions</option>
+                <option value="consulting">Business Logic Consulting</option>
+                <option value="multiple">Multiple Services</option>
+                <option value="other">Other / Not Sure</option>
+              </select>
+              <svg class="sel-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="budget">Estimated Budget</label>
+            <div class="select-wrap">
+              <select id="budget" name="budget">
+                <option value="" disabled selected>Select budget range...</option>
+                <option value="10-25k">$10,000 – $25,000</option>
+                <option value="25-50k">$25,000 – $50,000</option>
+                <option value="50-100k">$50,000 – $100,000</option>
+                <option value="100k+">$100,000+</option>
+                <option value="tbd">To be discussed</option>
+              </select>
+              <svg class="sel-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="details">Project Details <span class="req">*</span></label>
+            <textarea id="details" name="details" rows="6" placeholder="Describe your project — current tech stack, key challenges, timeline, and what success looks like..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary form-btn" id="form-submit-btn">
+            <span id="btn-text">Send Message</span>
+            <svg id="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <div class="form-success" id="form-success" aria-live="polite">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><strong>Message sent successfully!</strong><p>We'll get back to you within 2 hours. Check your inbox for a confirmation.</p></div>
+          </div>
+        </form>
+      </div>
+
+      <!-- INFO -->
+      <div class="contact-info-col reveal-right">
+        <div class="ci-section">
+          <h3>Contact Information</h3>
+          <div class="ci-items">
+            <div class="ci-item" id="ci-email">
+              <div class="ci-icon-wrap" style="--cic:#3B82F6;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div><strong>Email</strong><a href="mailto:hello@arvaancorelogic.com">hello@arvaancorelogic.com</a></div>
+            </div>
+            <div class="ci-item" id="ci-phone">
+              <div class="ci-icon-wrap" style="--cic:#06B6D4;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+              </div>
+              <div><strong>Phone</strong><a href="tel:+919876543210">+91 98765 43210</a></div>
+            </div>
+            <div class="ci-item" id="ci-whatsapp">
+              <div class="ci-icon-wrap" style="--cic:#10B981;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              </div>
+              <div><strong>WhatsApp</strong><a href="https://wa.me/919876543210" target="_blank" rel="noopener">Start a Chat</a></div>
+            </div>
+            <div class="ci-item" id="ci-location">
+              <div class="ci-icon-wrap" style="--cic:#8B5CF6;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div><strong>Location</strong><span>India — Remote-First · Global Delivery</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Availability Indicator -->
+        <div class="avail-card">
+          <div class="avail-pulse"></div>
+          <strong>Currently Available</strong>
+          <p>Our team is actively accepting new projects. Average project start time: <strong>2 weeks</strong> from signing.</p>
+        </div>
+
+        <!-- Social Channels -->
+        <div class="social-contact">
+          <h4>Reach Us On</h4>
+          <div class="sc-btns">
+            <a href="https://linkedin.com" target="_blank" rel="noopener" class="sc-btn" id="sc-linkedin">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener" class="sc-btn" id="sc-github">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section" style="background:var(--bg-2);">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag reveal">Common Questions</span>
+      <h2 class="section-title reveal d1">Frequently Asked <span class="gradient-text">Questions</span></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal d1" id="faq-1">
+        <button class="faq-q" aria-expanded="false">How long does a typical project take?<svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Project timelines depend on scope and complexity. An MVP typically takes 8–14 weeks. Enterprise projects range from 3–12 months. We'll give you a detailed timeline estimate after the discovery call.</div>
+      </div>
+      <div class="faq-item reveal d2" id="faq-2">
+        <button class="faq-q" aria-expanded="false">What is your development process?<svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">We follow an Agile sprint model: 2-week sprints with daily standups, weekly demos, and continuous delivery. You have full visibility into progress through our project dashboard and Slack channel.</div>
+      </div>
+      <div class="faq-item reveal d3" id="faq-3">
+        <button class="faq-q" aria-expanded="false">Do you sign NDAs?<svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Absolutely. We sign NDAs before any detailed discussion of your project. All code, IP, and business information are 100% protected by our standard NDA, available before kickoff.</div>
+      </div>
+      <div class="faq-item reveal d4" id="faq-4">
+        <button class="faq-q" aria-expanded="false">Who owns the code at the end?<svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">You do — 100%. All code, design assets, documentation, and IP created during the project are transferred fully to you upon project completion. No royalties, no licensing — it's yours.</div>
+      </div>
+      <div class="faq-item reveal d1" id="faq-5">
+        <button class="faq-q" aria-expanded="false">What post-launch support do you offer?<svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">We offer 30 days of free bug-fix support post-launch. Beyond that, we have flexible support & maintenance plans ranging from on-demand to 24/7 dedicated support contracts.</div>
+      </div>
+      <div class="faq-item reveal d2" id="faq-6">
+        <button class="faq-q" aria-expanded="false">Can you work with our existing team?<svg class="faq-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Yes — we specialise in team augmentation. We integrate seamlessly into your existing workflows, tools, and culture. Many of our clients use us to rapidly scale capacity without the hiring overhead.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+<script src="../js/contact.js"></script>
+</body>
+</html>

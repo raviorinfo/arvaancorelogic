@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Arvaan Core Logic Blog & Insights — Engineering articles, tech deep-dives, case study summaries, and industry trends from our expert team."/>
+  <title>Insights & Blog — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/blog.css?v=2.7"/>
+</head>
+<body data-page="blog">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-eyebrow"><span class="section-tag">Knowledge Hub</span></div>
+    <h1 class="page-hero-title">Engineering <span class="gradient-text">Insights</span> &amp;<br/>Tech Deep-Dives</h1>
+    <p class="page-hero-sub">Expert articles, architectural patterns, automation guides, and industry trends from the Arvaan Core Logic engineering team.</p>
+    <div class="blog-search-wrap">
+      <input type="search" id="blog-search" placeholder="Search articles..." class="blog-search" aria-label="Search blog articles"/>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="bs-icon" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY TABS -->
+<div class="blog-tabs-wrap">
+  <div class="container">
+    <div class="blog-tabs" role="tablist">
+      <button class="btab active" data-cat="all">All Articles</button>
+      <button class="btab" data-cat="architecture">Architecture</button>
+      <button class="btab" data-cat="automation">QA &amp; Software Testing</button>
+      <button class="btab" data-cat="cloud">Cloud & DevOps</button>
+      <button class="btab" data-cat="engineering">Engineering</button>
+      <button class="btab" data-cat="business">Business & Strategy</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED ARTICLE -->
+<section class="section featured-article-section" style="background:var(--bg);padding-top:3rem;padding-bottom:2rem;">
+  <div class="container">
+    <div class="featured-label reveal"><span class="section-tag">Featured</span></div>
+    <article class="featured-article card reveal d1" id="featured-post">
+      <div class="fa-content">
+        <div class="fa-meta">
+          <span class="tag tag-blue">Architecture</span>
+          <span class="fa-date">May 2026</span>
+          <span class="fa-read">12 min read</span>
+        </div>
+        <h2 class="fa-title">Microservices vs Monolith in 2026: When to Break It Up (And When Not To)</h2>
+        <p class="fa-excerpt">The microservices debate has raged for a decade. We've seen both architectures succeed and fail spectacularly. In this deep-dive, we break down the real-world decision framework we use with enterprise clients — with data from 30+ architecture projects.</p>
+        <div class="fa-footer">
+          <div class="fa-author">
+            <div class="fa-avatar" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)">AR</div>
+            <div><strong>Arvaan Rao</strong><span>CTO & Founder</span></div>
+          </div>
+          <a href="#" class="btn-primary fa-cta" id="featured-read-btn">Read Article <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        </div>
+      </div>
+      <div class="fa-visual" aria-hidden="true">
+        <div class="fav-diagram">
+          <div class="fav-node fav-gateway">API Gateway</div>
+          <div class="fav-row">
+            <div class="fav-node fav-service">Auth</div>
+            <div class="fav-node fav-service">Orders</div>
+            <div class="fav-node fav-service">Payments</div>
+            <div class="fav-node fav-service">Notify</div>
+          </div>
+          <div class="fav-row">
+            <div class="fav-db">DB</div>
+            <div class="fav-db">DB</div>
+            <div class="fav-db">DB</div>
+            <div class="fav-db">DB</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ARTICLES GRID -->
+<section class="section blog-grid-section" style="background:var(--bg);padding-top:1rem;">
+  <div class="container">
+    <div class="blog-grid" id="blog-grid">
+
+      <article class="blog-card card reveal d1" data-cat="automation" id="blog-playwright">
+        <div class="bc-header" style="background:linear-gradient(135deg,rgba(6,182,212,0.12),rgba(59,130,246,0.06));">
+          <div class="bc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--cyan-500)" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-meta"><span class="tag tag-cyan">QA &amp; Software Testing</span><span class="bc-read">8 min read</span></div>
+          <h3 class="bc-title">Building a Production-Grade Playwright Framework from Scratch</h3>
+          <p class="bc-excerpt">A step-by-step guide to building a maintainable, scalable Playwright test suite — from Page Object Models to CI/CD integration and reporting.</p>
+          <div class="bc-footer">
+            <div class="bc-author"><div class="bc-ava" style="background:linear-gradient(135deg,#8B5CF6,#06B6D4)">PR</div><strong>Priya Rajendran</strong></div>
+            <span class="bc-date">Apr 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="blog-card card reveal d2" data-cat="cloud" id="blog-k8s">
+        <div class="bc-header" style="background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(6,182,212,0.06));">
+          <div class="bc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--purple-500)" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-meta"><span class="tag tag-purple">Cloud & DevOps</span><span class="bc-read">10 min read</span></div>
+          <h3 class="bc-title">Kubernetes in Production: What They Don't Tell You</h3>
+          <p class="bc-excerpt">Lessons learned from 20+ Kubernetes deployments. The common pitfalls, the configuration mistakes, and the patterns that actually work at scale.</p>
+          <div class="bc-footer">
+            <div class="bc-author"><div class="bc-ava" style="background:linear-gradient(135deg,#10B981,#3B82F6)">KM</div><strong>Kiran Mehta</strong></div>
+            <span class="bc-date">Mar 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="blog-card card reveal d3" data-cat="engineering" id="blog-clean-code">
+        <div class="bc-header" style="background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(16,185,129,0.06));">
+          <div class="bc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--blue-500)" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-meta"><span class="tag tag-blue">Engineering</span><span class="bc-read">7 min read</span></div>
+          <h3 class="bc-title">Clean Code Principles That Senior Engineers Actually Follow</h3>
+          <p class="bc-excerpt">Beyond the classic books — the real-world principles that distinguish readable, maintainable code from technical debt nightmares.</p>
+          <div class="bc-footer">
+            <div class="bc-author"><div class="bc-ava" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)">AR</div><strong>Arvaan Rao</strong></div>
+            <span class="bc-date">Feb 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="blog-card card reveal d4" data-cat="business" id="blog-mvp">
+        <div class="bc-header" style="background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(59,130,246,0.06));">
+          <div class="bc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--green-500)" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-meta"><span class="tag tag-green">Business & Strategy</span><span class="bc-read">6 min read</span></div>
+          <h3 class="bc-title">Why Your MVP is Probably Tech Debt in Disguise</h3>
+          <p class="bc-excerpt">The speed-quality tradeoff in early-stage product development — and why skipping architecture always costs more in the long run.</p>
+          <div class="bc-footer">
+            <div class="bc-author"><div class="bc-ava" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">SA</div><strong>Shruti Agarwal</strong></div>
+            <span class="bc-date">Jan 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="blog-card card reveal d5" data-cat="architecture" id="blog-event-driven">
+        <div class="bc-header" style="background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(239,68,68,0.06));">
+          <div class="bc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--orange-500)" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-meta"><span class="tag tag-orange">Architecture</span><span class="bc-read">9 min read</span></div>
+          <h3 class="bc-title">Event-Driven Architecture: A Practical Guide for Enterprise Teams</h3>
+          <p class="bc-excerpt">Kafka, RabbitMQ, or AWS EventBridge? How to design event-driven systems that are resilient, observable, and don't turn into async spaghetti.</p>
+          <div class="bc-footer">
+            <div class="bc-author"><div class="bc-ava" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)">AR</div><strong>Arvaan Rao</strong></div>
+            <span class="bc-date">Dec 2025</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="blog-card card reveal d6" data-cat="cloud" id="blog-terraform">
+        <div class="bc-header" style="background:linear-gradient(135deg,rgba(139,92,246,0.1),rgba(59,130,246,0.06));">
+          <div class="bc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--purple-400)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-meta"><span class="tag tag-purple">Cloud & DevOps</span><span class="bc-read">11 min read</span></div>
+          <h3 class="bc-title">Terraform Best Practices: Infrastructure That Doesn't Break at 3am</h3>
+          <p class="bc-excerpt">From module structure to state management — the patterns our cloud team uses to write Terraform that's reliable, reviewable, and disaster-proof.</p>
+          <div class="bc-footer">
+            <div class="bc-author"><div class="bc-ava" style="background:linear-gradient(135deg,#10B981,#3B82F6)">KM</div><strong>Kiran Mehta</strong></div>
+            <span class="bc-date">Nov 2025</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Load More -->
+    <div class="load-more-wrap reveal">
+      <button class="btn-outline load-more-btn" id="load-more-btn">Load More Articles <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-inner reveal">
+      <div class="nl-content">
+        <h2>Get Engineering Insights<br/><span class="gradient-text">Delivered Weekly</span></h2>
+        <p>Join 2,000+ engineers and CTOs who get our hand-curated digest of architecture patterns, automation tips, and industry trends every Thursday.</p>
+      </div>
+      <form class="nl-form" id="nl-form" novalidate>
+        <input type="email" id="nl-email" placeholder="your@company.com" required aria-label="Email for newsletter"/>
+        <button type="submit" class="btn-primary">Subscribe <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </form>
+      <p class="nl-note">No spam. Unsubscribe anytime. Read by engineers, written by engineers.</p>
+    </div>
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+<script src="../js/blog.js"></script>
+</body>
+</html>

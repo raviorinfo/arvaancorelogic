@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Arvaan Core Logic Portfolio — Real-world case studies in enterprise development, automation, cloud, and consulting."/>
+  <title>Portfolio — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/portfolio.css?v=2.7"/>
+</head>
+<body data-page="portfolio">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-eyebrow"><span class="section-tag">Our Work</span></div>
+    <h1 class="page-hero-title">Case Studies &amp; <span class="gradient-text">Portfolio</span></h1>
+    <p class="page-hero-sub">Real-world impact across industries. Explore how we've engineered solutions that transformed businesses, accelerated teams, and scaled systems.</p>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="portfolio-stats-bar">
+  <div class="container">
+    <div class="psb-inner reveal">
+      <div class="psb-item"><span class="psb-val gradient-text">120+</span><span>Total Projects</span></div>
+      <div class="psb-sep"></div>
+      <div class="psb-item"><span class="psb-val gradient-text">15+</span><span>Industries Served</span></div>
+      <div class="psb-sep"></div>
+      <div class="psb-item"><span class="psb-val gradient-text">15+</span><span>Countries</span></div>
+      <div class="psb-sep"></div>
+      <div class="psb-item"><span class="psb-val gradient-text">99%</span><span>On-Time Delivery</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="portfolio-filter-wrap">
+  <div class="container">
+    <div class="pf-filters" role="group" aria-label="Filter projects">
+      <button class="pf-btn active" data-filter="all">All Projects</button>
+      <button class="pf-btn" data-filter="enterprise">Enterprise Dev</button>
+      <button class="pf-btn" data-filter="automation">QA &amp; Software Testing</button>
+      <button class="pf-btn" data-filter="cloud">Cloud & DevOps</button>
+      <button class="pf-btn" data-filter="consulting">Consulting</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS GRID -->
+<section class="section portfolio-section" style="background:var(--bg);padding-top:2rem;">
+  <div class="container">
+    <div class="projects-grid" id="projects-grid">
+
+      <!-- Project 1 -->
+      <article class="proj-card card reveal d1" data-category="enterprise" id="proj-finserve">
+        <div class="proj-img-wrap">
+          <img src="../images/portfolio_fintech.png" alt="FinServe Technologies platform dashboard" loading="lazy" class="proj-img"/>
+          <div class="proj-overlay">
+            <a href="#" class="proj-view-btn" id="proj-view-1">View Case Study <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="tag tag-blue">Enterprise Dev</span>
+            <span class="proj-year">2024</span>
+          </div>
+          <h3 class="proj-title">FinServe Technologies — Core Banking Platform</h3>
+          <p class="proj-desc">Complete microservices rewrite of a monolithic core banking system. Reduced latency by 70%, improved transaction throughput 5x, zero downtime migration.</p>
+          <div class="proj-results">
+            <div class="pr-item"><span class="pr-val">5x</span><span>Transaction Throughput</span></div>
+            <div class="pr-item"><span class="pr-val">70%</span><span>Latency Reduction</span></div>
+            <div class="pr-item"><span class="pr-val">0</span><span>Downtime Hours</span></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag tag-blue">React</span><span class="tag tag-blue">Node.js</span><span class="tag tag-cyan">PostgreSQL</span><span class="tag tag-cyan">Kafka</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="proj-card card reveal d2" data-category="automation" id="proj-retailscale">
+        <div class="proj-img-wrap">
+          <img src="../images/portfolio_ecommerce.png" alt="RetailScale automation dashboard" loading="lazy" class="proj-img"/>
+          <div class="proj-overlay">
+            <a href="#" class="proj-view-btn" id="proj-view-2">View Case Study <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="tag tag-cyan">QA &amp; Software Testing</span>
+            <span class="proj-year">2024</span>
+          </div>
+          <h3 class="proj-title">RetailScale — E-Commerce QA Automation</h3>
+          <p class="proj-desc">Built a comprehensive Playwright + Pytest automation suite for a 500K+ product e-commerce platform. Release cycle cut from 3 weeks to 4 days.</p>
+          <div class="proj-results">
+            <div class="pr-item"><span class="pr-val">4 days</span><span>Release Cycle</span></div>
+            <div class="pr-item"><span class="pr-val">99%</span><span>Bug Detection</span></div>
+            <div class="pr-item"><span class="pr-val">2000+</span><span>Test Cases</span></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag tag-cyan">Playwright</span><span class="tag tag-green">Pytest</span><span class="tag tag-blue">GitHub Actions</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="proj-card card reveal d3" data-category="cloud" id="proj-medtech">
+        <div class="proj-img-wrap">
+          <img src="../images/portfolio_healthcare.png" alt="MedTech cloud infrastructure" loading="lazy" class="proj-img"/>
+          <div class="proj-overlay">
+            <a href="#" class="proj-view-btn" id="proj-view-3">View Case Study <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="tag tag-purple">Cloud & DevOps</span>
+            <span class="proj-year">2023</span>
+          </div>
+          <h3 class="proj-title">MedTech Corp — Cloud Migration & HIPAA Compliance</h3>
+          <p class="proj-desc">Zero-downtime migration of 8 legacy healthcare applications to AWS. Achieved HIPAA compliance, improved performance 40%, reduced infrastructure costs 33%.</p>
+          <div class="proj-results">
+            <div class="pr-item"><span class="pr-val">40%</span><span>Performance Gain</span></div>
+            <div class="pr-item"><span class="pr-val">33%</span><span>Cost Reduction</span></div>
+            <div class="pr-item"><span class="pr-val">100%</span><span>HIPAA Compliant</span></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag tag-purple">AWS</span><span class="tag tag-purple">Terraform</span><span class="tag tag-cyan">Docker</span><span class="tag tag-blue">Kubernetes</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4 -->
+      <article class="proj-card card reveal d4" data-category="enterprise" id="proj-saasplatform">
+        <div class="proj-img-wrap">
+          <img src="../images/portfolio_devops.png" alt="SaaS platform DevOps pipeline" loading="lazy" class="proj-img"/>
+          <div class="proj-overlay">
+            <a href="#" class="proj-view-btn" id="proj-view-4">View Case Study <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="tag tag-blue">Enterprise Dev</span>
+            <span class="proj-year">2023</span>
+          </div>
+          <h3 class="proj-title">LogiFlow — Logistics SaaS Platform</h3>
+          <p class="proj-desc">Ground-up SaaS platform for global logistics management serving 200+ enterprise clients. Real-time tracking, AI-powered routing, multi-tenant architecture.</p>
+          <div class="proj-results">
+            <div class="pr-item"><span class="pr-val">200+</span><span>Enterprise Users</span></div>
+            <div class="pr-item"><span class="pr-val">99.95%</span><span>SLA Uptime</span></div>
+            <div class="pr-item"><span class="pr-val">12mo</span><span>Time to Market</span></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag tag-blue">Next.js</span><span class="tag tag-blue">Python</span><span class="tag tag-purple">AWS</span><span class="tag tag-cyan">Redis</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 5 -->
+      <article class="proj-card card reveal d1" data-category="consulting" id="proj-legacy">
+        <div class="proj-img-wrap" style="background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(59,130,246,0.05));display:flex;align-items:center;justify-content:center;min-height:180px;">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="tag tag-green">Consulting</span>
+            <span class="proj-year">2023</span>
+          </div>
+          <h3 class="proj-title">EduSync — Legacy System Digital Transformation</h3>
+          <p class="proj-desc">Architected a 24-month digital transformation roadmap for a 30-year-old education management system. Reduced operational costs by 50%, enabled API-first strategy.</p>
+          <div class="proj-results">
+            <div class="pr-item"><span class="pr-val">50%</span><span>Cost Reduction</span></div>
+            <div class="pr-item"><span class="pr-val">24mo</span><span>Roadmap Delivered</span></div>
+            <div class="pr-item"><span class="pr-val">6</span><span>Systems Integrated</span></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag tag-green">Architecture</span><span class="tag tag-green">API Design</span><span class="tag tag-orange">Digital Transformation</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 6 -->
+      <article class="proj-card card reveal d2" data-category="automation" id="proj-bankqa">
+        <div class="proj-img-wrap" style="background:linear-gradient(135deg,rgba(6,182,212,0.1),rgba(59,130,246,0.05));display:flex;align-items:center;justify-content:center;min-height:180px;">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="rgba(6,182,212,0.3)" stroke-width="1" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="proj-body">
+          <div class="proj-meta">
+            <span class="tag tag-cyan">QA &amp; Software Testing</span>
+            <span class="proj-year">2022</span>
+          </div>
+          <h3 class="proj-title">BankFirst — Regulatory Compliance Test Automation</h3>
+          <p class="proj-desc">Built a comprehensive automated compliance testing framework for a regional bank. Eliminated 3 FTEs of manual testing work while improving coverage from 45% to 97%.</p>
+          <div class="proj-results">
+            <div class="pr-item"><span class="pr-val">97%</span><span>Test Coverage</span></div>
+            <div class="pr-item"><span class="pr-val">3 FTE</span><span>Cost Saved</span></div>
+            <div class="pr-item"><span class="pr-val">100%</span><span>Audit Pass Rate</span></div>
+          </div>
+          <div class="proj-tags">
+            <span class="tag tag-cyan">Selenium</span><span class="tag tag-green">pytest</span><span class="tag tag-blue">Jenkins</span>
+          </div>
+        </div>
+      </article>
+
+    </div><!-- /projects-grid -->
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background:var(--bg-2);padding:4rem 0;text-align:center;">
+  <div class="container">
+    <h2 class="section-title reveal">Your Project Could Be <span class="gradient-text">Next</span></h2>
+    <p class="section-sub reveal d1">Let's create a case study that showcases your transformation. Start with a free consultation.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;" class="reveal d2">
+      <a href="contact.html" class="btn-primary">Start Your Project <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="services.html" class="btn-outline">Our Services</a>
+    </div>
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+<script src="../js/portfolio.js"></script>
+</body>
+</html>
