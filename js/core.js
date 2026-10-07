@@ -16,6 +16,9 @@ function getPaths() {
     portfolio: inPages ? 'portfolio.html'         : 'pages/portfolio.html',
     blog:      inPages ? 'blog.html'              : 'pages/blog.html',
     contact:   inPages ? 'contact.html'           : 'pages/contact.html',
+    privacy:   inPages ? 'privacy.html'           : 'pages/privacy.html',
+    terms:     inPages ? 'terms.html'             : 'pages/terms.html',
+    cookies:   inPages ? 'cookies.html'           : 'pages/cookies.html',
     // service hash anchors
     srvEnt:    inPages ? 'services.html#enterprise'  : 'pages/services.html#enterprise',
     srvAuto:   inPages ? 'services.html#automation'  : 'pages/services.html#automation',
@@ -163,17 +166,18 @@ function injectShell() {
             <li><a href="${p.abtTeam}">Our Team</a></li>
             <li><a href="${p.portfolio}">Case Studies</a></li>
             <li><a href="${p.blog}">Blog</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
+            <li><a href="${p.privacy}">Privacy Policy</a></li>
+            <li><a href="${p.terms}">Terms of Service</a></li>
+            <li><a href="${p.cookies}">Cookie Policy</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2026 Arvaan Core Logic. All rights reserved. Engineered with precision.</p>
         <div class="footer-bottom-right">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Cookies</a>
+          <a href="${p.privacy}">Privacy</a>
+          <a href="${p.terms}">Terms</a>
+          <a href="${p.cookies}">Cookies</a>
         </div>
       </div>
     </div>`;
@@ -295,53 +299,86 @@ function initCanvas(canvasId = 'hero-canvas') {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, particles, raf;
-  const COUNT = window.innerWidth < 768 ? 40 : 80;
-  const DIST  = 135;
-  const SPD   = 0.26;
+  const COUNT = window.innerWidth < 768 ? 70 : 160;
+  const DIST  = 160;
+  const SPD   = 0.45;
+  let mouse = { x: -1000, y: -1000 };
 
   const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
   const spawn  = () => {
-    particles = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * SPD, vy: (Math.random() - 0.5) * SPD,
-      r: Math.random() * 1.8 + 0.7,
-      a: Math.random() * 0.45 + 0.08,
-    }));
+    particles = Array.from({ length: COUNT }, () => {
+      const z = Math.random() * 0.8 + 0.4;
+      return {
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * SPD * z,
+        vy: (Math.random() - 0.5) * SPD * z,
+        r: (Math.random() * 2.5 + 1.2) * z,
+        a: Math.random() * 0.5 + 0.5,
+        type: Math.random() > 0.5 ? 1 : 2
+      };
+    });
   };
   const colors = () => {
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    return { p: dark ? 'rgba(59,130,246,' : 'rgba(37,99,235,', l: dark ? 'rgba(6,182,212,' : 'rgba(59,130,246,' };
+    return {
+      c1: dark ? '99,102,241' : '37,99,235',
+      c2: dark ? '45,212,191' : '6,182,212'
+    };
   };
   const draw = () => {
     ctx.clearRect(0, 0, W, H);
     const c = colors();
+    
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) ctx.globalCompositeOperation = 'lighter';
+
     particles.forEach((p, i) => {
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 180) {
+        const force = (180 - dist) / 180;
+        p.vx += (dx / dist) * force * 0.05;
+        p.vy += (dy / dist) * force * 0.05;
+      }
+
+      const s = Math.hypot(p.vx, p.vy);
+      if (s > 2.2) { p.vx *= 0.95; p.vy *= 0.95; }
+
       p.x += p.vx; p.y += p.vy;
-      if (p.x < -8) p.x = W + 8; if (p.x > W + 8) p.x = -8;
-      if (p.y < -8) p.y = H + 8; if (p.y > H + 8) p.y = -8;
+      if (p.x < -20) p.x = W + 20; if (p.x > W + 20) p.x = -20;
+      if (p.y < -20) p.y = H + 20; if (p.y > H + 20) p.y = -20;
+      
+      const rgb = p.type === 1 ? c.c1 : c.c2;
+      
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = c.p + p.a + ')'; ctx.fill();
+      ctx.fillStyle = `rgba(${rgb},${p.a})`; 
+      ctx.fill();
+
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rgb},${p.a * 0.15})`; 
+      ctx.fill();
+
       for (let j = i + 1; j < particles.length; j++) {
-        const q = particles[j], d = Math.hypot(p.x - q.x, p.y - q.y);
-        if (d < DIST) {
+        const q = particles[j];
+        const lineD = Math.hypot(p.x - q.x, p.y - q.y);
+        if (lineD < DIST) {
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-          ctx.strokeStyle = c.l + (1 - d / DIST) * 0.12 + ')';
-          ctx.lineWidth = 1; ctx.stroke();
+          const lineAlpha = (1 - lineD / DIST) * 0.45;
+          ctx.strokeStyle = `rgba(${rgb},${lineAlpha})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
         }
       }
     });
+    
+    if (isDark) ctx.globalCompositeOperation = 'source-over';
     raf = requestAnimationFrame(draw);
   };
   resize(); spawn(); draw();
   window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); spawn(); draw(); }, { passive: true });
-  document.addEventListener('mousemove', e => {
-    const fx = (e.clientX / W - 0.5) * 0.35, fy = (e.clientY / H - 0.5) * 0.35;
-    particles.forEach(p => {
-      p.vx += fx * 0.002; p.vy += fy * 0.002;
-      const s = Math.hypot(p.vx, p.vy);
-      if (s > 1.4) { p.vx = p.vx / s * 1.4; p.vy = p.vy / s * 1.4; }
-    });
-  }, { passive: true });
+  document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+  document.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
 }
 
 /* ── Counter animation ── */

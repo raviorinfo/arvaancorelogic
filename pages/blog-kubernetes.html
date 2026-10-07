@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Kubernetes in Production: Lessons learned from 20+ enterprise clusters. The reality of CPU throttling, memory OOMKilled, graceful termination hooks, and GitOps best practices."/>
+  <title>Kubernetes in Production: What They Don't Tell You — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/article.css?v=2.7"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Kubernetes in Production: What They Don't Tell You",
+    "description": "Hard-earned production lessons from running Kubernetes at scale: CPU throttling pitfalls, OOM handling, graceful termination, and GitOps workflows.",
+    "author": {
+      "@type": "Person",
+      "name": "Kiran Mehta",
+      "jobTitle": "Head of Cloud & DevOps"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Arvaan Core Logic"
+    },
+    "datePublished": "2026-03-10",
+    "dateModified": "2026-10-07"
+  }
+  </script>
+</head>
+<body data-page="blog">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <div class="container">
+    <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="blog.html">Insights</a>
+      <span class="sep">/</span>
+      <span>Cloud &amp; DevOps</span>
+    </nav>
+    <div class="article-header-meta">
+      <span class="tag tag-purple">Cloud &amp; DevOps</span>
+      <span class="tag tag-blue">Kubernetes</span>
+      <time datetime="2026-03-10" style="color:var(--text-3);font-size:0.875rem;">March 10, 2026</time>
+    </div>
+    <h1 class="article-title">Kubernetes in Production: What They Don't Tell You</h1>
+    <div class="article-author-row">
+      <div class="article-author">
+        <div class="article-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">KM</div>
+        <div class="article-author-info">
+          <strong>Kiran Mehta</strong>
+          <span>Head of Cloud &amp; DevOps</span>
+        </div>
+      </div>
+      <div class="article-stats">
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>11 min read</span>
+        </div>
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span>SRE &amp; Infrastructure</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE MAIN CONTENT -->
+<section class="article-section">
+  <div class="container article-layout">
+    
+    <main class="article-body">
+      <p class="article-lead">
+        Kubernetes tutorials make container orchestration look effortless: apply a YAML file, watch your pods spin up, and celebrate auto-scaling. But when production traffic spikes at 2:00 AM, the subtleties of Linux cgroups, kernel packet filters, and scheduler decisions quickly turn into high-severity incidents.
+      </p>
+
+      <!-- AdSense Slot (Top) -->
+      <div class="ad-slot-container" id="ad-article-top">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">Responsive In-Article Banner (AdSense Slot)</div>
+      </div>
+
+      <h2 id="cpu-limits-trap">1. The CPU Limits Trap: Why Your App is Throttled at 30% Utilization</h2>
+      <p>
+        One of the most counterintuitive traps in Kubernetes is setting strict <code>resources.limits.cpu</code>. Many platform engineers assume that assigning a limit prevents a runaway process from consuming the entire node. While true, how the Linux Completely Fair Scheduler (CFS) enforces this limit is often misunderstood.
+      </p>
+      <p>
+        CFS operates on quota periods (defaulting to 100ms). If your container has a limit of <code>500m</code> (0.5 cores), it is allocated 50ms of CPU run-time within each 100ms slice. If a multi-threaded web server spikes across multiple threads and burns through that 50ms quota within the first 15ms, <strong>the kernel pauses the entire container process for the remaining 85ms</strong>.
+      </p>
+      <p>
+        Your APM dashboards will report average CPU utilization at only 25%, yet your API response latency will suddenly jump from 20ms to 250ms due to repeated CFS throttling pauses.
+      </p>
+
+      <div class="takeaway-box">
+        <div class="takeaway-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Production Recommendation
+        </div>
+        <p>Always set realistic <code>resources.requests.cpu</code> based on baseline load, but consider omitting <code>resources.limits.cpu</code> unless you have strict multi-tenant boundary constraints. Instead, rely on node-level autoscaling (Karpenter or Cluster Autoscaler) and memory limits.</p>
+      </div>
+
+      <h2 id="memory-oomkilled">2. Surviving OOMKilled: Understanding V8 &amp; JVM Memory in Containers</h2>
+      <p>
+        Unlike CPU, memory cannot be throttled. When a pod exceeds its <code>resources.limits.memory</code>, the Linux Out-Of-Memory (OOM) killer instantly terminates the process with <code>Exit Code 137 (OOMKilled)</code>.
+      </p>
+      <p>
+        Common culprits include runtimes that do not automatically detect container cgroup memory boundaries:
+      </p>
+      <ul>
+        <li><strong>Node.js V8:</strong> Node.js often attempts to allocate heap memory based on total machine RAM rather than the pod's container limit. Always pass <code>--max-old-space-size</code> explicitly in your start script (e.g., set to 75% of your pod memory limit).</li>
+        <li><strong>JVM (Java):</strong> Ensure you are running Java 17+ with <code>-XX:+UseContainerSupport</code> and tune <code>-XX:MaxRAMPercentage=75.0</code> to prevent JVM native memory overhead (metaspace, thread stacks) from triggering container eviction.</li>
+      </ul>
+
+      <!-- AdSense Slot (Mid) -->
+      <div class="ad-slot-container" id="ad-article-mid">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">In-Content Fluid Ad (AdSense Slot)</div>
+      </div>
+
+      <h2 id="graceful-termination">3. Zero-Downtime Deployments &amp; The preStop Hook</h2>
+      <p>
+        When Kubernetes rolls out a new deployment version, it concurrently sends a <code>SIGTERM</code> signal to the terminating pod while removing the pod's IP address from EndpointSlices and iptables routing rules.
+      </p>
+      <p>
+        Because iptables updates take several seconds to propagate across all worker nodes, traffic intended for the terminating pod continues to arrive after the application has begun shutting down—resulting in HTTP 502/504 Bad Gateway spikes during routine deployments.
+      </p>
+      <p>
+        The battle-tested fix is adding a <code>preStop</code> sleep hook to allow inflight requests to complete while routing rules update:
+      </p>
+
+      <div class="code-box">
+        <div class="code-header">
+          <span>deployment.yaml — Zero Downtime Termination</span>
+          <span class="lang-tag">YAML</span>
+        </div>
+        <pre><code>spec:
+  containers:
+    - name: api-server
+      image: registry.internal.net/api:v2.4
+      lifecycle:
+        preStop:
+          exec:
+            # 1. Delay shutdown to allow iptables propagation
+            command: ["/bin/sh", "-c", "sleep 15"]
+      readinessProbe:
+        httpGet:
+          path: /health/ready
+          port: 8080
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      livenessProbe:
+        httpGet:
+          path: /health/live
+          port: 8080
+        initialDelaySeconds: 15
+        periodSeconds: 10
+  # Ensure grace period accounts for the preStop sleep duration
+  terminationGracePeriodSeconds: 45</code></pre>
+      </div>
+
+      <h2 id="gitops-argocd">4. Moving Beyond 'kubectl apply' with GitOps</h2>
+      <p>
+        Running manual <code>kubectl apply</code> or executing scripts directly from developer laptops destroys auditability and invites configuration drift. In enterprise production, Git must be the single source of truth for all declarative cluster state.
+      </p>
+      <p>
+        Using <strong>ArgoCD</strong> or <strong>Flux</strong>, changes are merged into a Git repository via pull requests. The GitOps operator continuously synchronizes the live cluster state with the desired state in Git, auto-healing any unauthorized manual cluster modifications.
+      </p>
+
+      <h2 id="summary">5. Essential SRE Checklist for Kubernetes</h2>
+      <ul>
+        <li>Define <code>PodDisruptionBudgets (PDB)</code> to prevent node drains and upgrades from taking down critical services simultaneously.</li>
+        <li>Set both <code>readinessProbe</code> and <code>livenessProbe</code> with distinct endpoints to prevent pods undergoing heavy GC or warm-up from being prematurely killed.</li>
+        <li>Implement NetworkPolicies from Day 1 to prevent lateral movement in the event of a container compromise.</li>
+      </ul>
+
+      <!-- Author Bio Box -->
+      <section class="author-bio-card">
+        <div class="author-bio-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">KM</div>
+        <div class="author-bio-text">
+          <h4>Kiran Mehta</h4>
+          <span class="author-bio-role">Head of Cloud &amp; Infrastructure</span>
+          <p>Kiran has designed multi-region cloud infrastructures across AWS, GCP, and Azure for high-growth enterprises. He specializes in container security, SRE practices, and cost optimization.</p>
+        </div>
+      </section>
+
+      <!-- Pagination / Next Articles -->
+      <nav class="article-nav-row">
+        <a href="blog-playwright.html" class="article-nav-card">
+          <span class="nav-dir">&larr; Previous Article</span>
+          <span class="nav-title">Building a Production-Grade Playwright Framework</span>
+        </a>
+        <a href="blog-clean-code.html" class="article-nav-card">
+          <span class="nav-dir">Next Article &rarr;</span>
+          <span class="nav-title">Clean Code Principles That Senior Engineers Actually Follow</span>
+        </a>
+      </nav>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="article-sidebar">
+      <div class="sidebar-widget">
+        <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Table of Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#cpu-limits-trap">1. The CPU Limits Trap</a></li>
+          <li><a href="#memory-oomkilled">2. Surviving OOMKilled (JVM/V8)</a></li>
+          <li><a href="#graceful-termination">3. Zero-Downtime Deployments</a></li>
+          <li><a href="#gitops-argocd">4. GitOps with ArgoCD</a></li>
+          <li><a href="#summary">5. Essential SRE Checklist</a></li>
+        </ul>
+      </div>
+
+      <!-- AdSense Slot (Sidebar) -->
+      <div class="ad-slot-container" id="ad-article-sidebar">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder" style="min-height:250px;">300x250 Medium Rectangle (AdSense Slot)</div>
+      </div>
+
+      <div class="sidebar-widget sidebar-cta">
+        <h4>Cloud Migration &amp; DevOps</h4>
+        <p>Looking to modernize your infrastructure or stabilize production Kubernetes clusters? Work with our certified cloud architects.</p>
+        <a href="contact.html?service=cloud" class="btn-primary" style="display:inline-flex;padding:0.6rem 1.25rem;font-size:0.875rem;">Request Cloud Audit</a>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+</body>
+</html>

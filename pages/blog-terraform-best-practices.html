@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Terraform Best Practices: Infrastructure as Code that doesn't break at 3 AM. Module architecture, state locking with S3 and DynamoDB, automated PR plans, and drift detection."/>
+  <title>Terraform Best Practices: Infrastructure That Doesn't Break — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/article.css?v=2.7"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Terraform Best Practices: Infrastructure That Doesn't Break at 3am",
+    "description": "Enterprise guide to maintainable Terraform: remote state locking, modular repository structures, CI/CD automated plan validation, and automated drift management.",
+    "author": {
+      "@type": "Person",
+      "name": "Kiran Mehta",
+      "jobTitle": "Head of Cloud & DevOps"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Arvaan Core Logic"
+    },
+    "datePublished": "2025-11-28",
+    "dateModified": "2026-10-07"
+  }
+  </script>
+</head>
+<body data-page="blog">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <div class="container">
+    <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="blog.html">Insights</a>
+      <span class="sep">/</span>
+      <span>Cloud &amp; DevOps</span>
+    </nav>
+    <div class="article-header-meta">
+      <span class="tag tag-purple">Cloud &amp; DevOps</span>
+      <span class="tag tag-cyan">Terraform &amp; IaC</span>
+      <time datetime="2025-11-28" style="color:var(--text-3);font-size:0.875rem;">November 28, 2025</time>
+    </div>
+    <h1 class="article-title">Terraform Best Practices: Infrastructure That Doesn't Break at 3am</h1>
+    <div class="article-author-row">
+      <div class="article-author">
+        <div class="article-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">KM</div>
+        <div class="article-author-info">
+          <strong>Kiran Mehta</strong>
+          <span>Head of Cloud &amp; DevOps</span>
+        </div>
+      </div>
+      <div class="article-stats">
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>10 min read</span>
+        </div>
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>Infrastructure as Code</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE MAIN CONTENT -->
+<section class="article-section">
+  <div class="container article-layout">
+    
+    <main class="article-body">
+      <p class="article-lead">
+        Infrastructure as Code (IaC) is supposed to turn cloud provisioning into a deterministic, version-controlled process. Yet without disciplined module boundaries and state management, teams frequently encounter corrupted state files, accidental destructive updates, and panicked midnight outages.
+      </p>
+
+      <!-- AdSense Slot (Top) -->
+      <div class="ad-slot-container" id="ad-article-top">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">Responsive In-Article Banner (AdSense Slot)</div>
+      </div>
+
+      <h2 id="state-management">1. Remote State Backend &amp; Concurrency Locking</h2>
+      <p>
+        Never store Terraform state files in Git. Aside from exposing sensitive credentials and database connection strings in plain text, multiple engineers running <code>terraform apply</code> simultaneously will corrupt your state file.
+      </p>
+      <p>
+        On AWS, configure an S3 bucket with server-side KMS encryption and versioning, paired with DynamoDB for state locking:
+      </p>
+
+      <div class="code-box">
+        <div class="code-header">
+          <span>backend.tf — S3 &amp; DynamoDB Lock</span>
+          <span class="lang-tag">HCL</span>
+        </div>
+        <pre><code>terraform {
+  required_version = "&gt;= 1.8.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~&gt; 5.40"
+    }
+  }
+
+  backend "s3" {
+    bucket         = "arvaan-corp-terraform-state-prod"
+    key            = "networking/vpc/terraform.tfstate"
+    region         = "ap-south-1"
+    encrypt        = true
+    dynamodb_table = "terraform-state-locks"
+  }
+}</code></pre>
+      </div>
+
+      <h2 id="blast-radius">2. Reduce Blast Radius: The Monolithic State File Anti-Pattern</h2>
+      <p>
+        Putting your VPC, RDS databases, EKS clusters, and IAM roles inside a single <code>main.tf</code> state file is an operational disaster waiting to happen. An inadvertent parameter change in a security group could trigger a recreational destruction of your production database.
+      </p>
+      <p>
+        <strong>Decompose state files by lifecycle and volatility:</strong>
+      </p>
+      <ul>
+        <li><strong>Foundation (Slow-moving):</strong> VPC, subnets, routing tables, NAT Gateways (changed once a year).</li>
+        <li><strong>Data Tier (High-criticality):</strong> RDS, DynamoDB, S3 buckets with termination protection enabled.</li>
+        <li><strong>Compute Tier (Frequent changes):</strong> Kubernetes nodes, ECS task definitions, autoscaling groups.</li>
+      </ul>
+
+      <!-- AdSense Slot (Mid) -->
+      <div class="ad-slot-container" id="ad-article-mid">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">In-Content Fluid Ad (AdSense Slot)</div>
+      </div>
+
+      <h2 id="automated-ci">3. Automated CI/CD Plan Reviews (Atlantis / Spacelift)</h2>
+      <p>
+        Humans should never run <code>terraform apply</code> from their laptops. In mature engineering organizations, Terraform is executed strictly via CI pipelines:
+      </p>
+      <ol>
+        <li>A developer submits a pull request updating a Terraform module.</li>
+        <li>CI automatically runs <code>tflint</code>, <code>checkov</code> (security policy auditing), and <code>terraform plan</code>.</li>
+        <li>The plan output is commented directly onto the PR for peer review.</li>
+        <li>Upon approval and merge, the pipeline applies the plan against production.</li>
+      </ol>
+
+      <div class="takeaway-box">
+        <div class="takeaway-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Golden Rules of Enterprise Terraform
+        </div>
+        <ul>
+          <li>Always enable <code>prevent_destroy = true</code> in the <code>lifecycle</code> block of mission-critical databases and storage buckets.</li>
+          <li>Pin provider and module versions strictly to avoid upstream breaking changes.</li>
+          <li>Schedule automated drift detection (daily plans) to catch manual AWS console changes immediately.</li>
+        </ul>
+      </div>
+
+      <!-- Author Bio Box -->
+      <section class="author-bio-card">
+        <div class="author-bio-avatar" style="background:linear-gradient(135deg,#10B981,#3B82F6)">KM</div>
+        <div class="author-bio-text">
+          <h4>Kiran Mehta</h4>
+          <span class="author-bio-role">Head of Cloud &amp; Infrastructure</span>
+          <p>Kiran is an AWS Certified Solutions Architect Professional and DevOps strategist. He has managed multi-million dollar cloud migrations with 99.99% uptime guarantees.</p>
+        </div>
+      </section>
+
+      <!-- Pagination / Next Articles -->
+      <nav class="article-nav-row">
+        <a href="blog-event-driven.html" class="article-nav-card">
+          <span class="nav-dir">&larr; Previous Article</span>
+          <span class="nav-title">Event-Driven Architecture: A Practical Guide</span>
+        </a>
+        <a href="blog-mvp-tech-debt.html" class="article-nav-card">
+          <span class="nav-dir">Next Article &rarr;</span>
+          <span class="nav-title">Why Your MVP is Probably Tech Debt in Disguise</span>
+        </a>
+      </nav>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="article-sidebar">
+      <div class="sidebar-widget">
+        <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Table of Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#state-management">1. State Backend &amp; Locking</a></li>
+          <li><a href="#blast-radius">2. Reducing Blast Radius</a></li>
+          <li><a href="#automated-ci">3. Automated CI/CD Reviews</a></li>
+        </ul>
+      </div>
+
+      <!-- AdSense Slot (Sidebar) -->
+      <div class="ad-slot-container" id="ad-article-sidebar">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder" style="min-height:250px;">300x250 Medium Rectangle (AdSense Slot)</div>
+      </div>
+
+      <div class="sidebar-widget sidebar-cta">
+        <h4>Automate Your Infrastructure</h4>
+        <p>Tired of manual cloud provisioning errors? Let our DevOps engineers build automated Terraform pipelines.</p>
+        <a href="contact.html?service=cloud" class="btn-primary" style="display:inline-flex;padding:0.6rem 1.25rem;font-size:0.875rem;">Get Cloud Strategy</a>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+</body>
+</html>

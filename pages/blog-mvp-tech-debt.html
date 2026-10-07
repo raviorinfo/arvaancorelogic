@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Why Your MVP is Probably Tech Debt in Disguise: Navigating the speed-quality tradeoff in early product development, avoiding lethal shortcuts, and scaling cleanly."/>
+  <title>Why Your MVP is Probably Tech Debt in Disguise — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/article.css?v=2.7"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Why Your MVP is Probably Tech Debt in Disguise",
+    "description": "The strategic tradeoff between shipping quickly and building scalable foundations: what shortcuts are acceptable and which ones permanently cripple engineering teams.",
+    "author": {
+      "@type": "Person",
+      "name": "Shruti Agarwal",
+      "jobTitle": "Head of Product Strategy"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Arvaan Core Logic"
+    },
+    "datePublished": "2026-01-22",
+    "dateModified": "2026-10-07"
+  }
+  </script>
+</head>
+<body data-page="blog">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <div class="container">
+    <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="blog.html">Insights</a>
+      <span class="sep">/</span>
+      <span>Business &amp; Strategy</span>
+    </nav>
+    <div class="article-header-meta">
+      <span class="tag tag-green">Business &amp; Strategy</span>
+      <span class="tag tag-blue">Product Engineering</span>
+      <time datetime="2026-01-22" style="color:var(--text-3);font-size:0.875rem;">January 22, 2026</time>
+    </div>
+    <h1 class="article-title">Why Your MVP is Probably Tech Debt in Disguise</h1>
+    <div class="article-author-row">
+      <div class="article-author">
+        <div class="article-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">SA</div>
+        <div class="article-author-info">
+          <strong>Shruti Agarwal</strong>
+          <span>Head of Product Strategy</span>
+        </div>
+      </div>
+      <div class="article-stats">
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>7 min read</span>
+        </div>
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <span>Startup &amp; Scale-up</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE MAIN CONTENT -->
+<section class="article-section">
+  <div class="container article-layout">
+    
+    <main class="article-body">
+      <p class="article-lead">
+        In the rush to achieve product-market fit, founders and product managers are constantly told to "move fast and break things." But what happens when the prototype you hacked together in three weeks succeeds, and suddenly millions of dollars in enterprise transactions depend on code written with zero architectural foundation?
+      </p>
+
+      <!-- AdSense Slot (Top) -->
+      <div class="ad-slot-container" id="ad-article-top">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">Responsive In-Article Banner (AdSense Slot)</div>
+      </div>
+
+      <h2 id="the-false-dichotomy">1. The False Dichotomy: Speed vs. Quality</h2>
+      <p>
+        The assumption that writing clean, modular code takes significantly longer than writing sloppy, unmaintainable code is false. Experienced engineering teams actually move <em>faster</em> when starting from a disciplined foundation because they spend less time debugging unexplained runtime errors, tangled state, and missing database indexes.
+      </p>
+      <p>
+        The real delay in software delivery comes from scope creep and building features nobody asked for—not from following clean code principles.
+      </p>
+
+      <h2 id="toxic-vs-benign-debt">2. Toxic Debt vs. Benign Technical Debt</h2>
+      <p>
+        Not all technical debt is equal. As an engineering organization, you must distinguish between shortcuts you can pay down later and shortcuts that permanently compromise the system:
+      </p>
+      <ul>
+        <li><strong>Benign Debt (Acceptable in MVP):</strong> Hardcoded configuration values, manual onboarding scripts instead of automated self-serve dashboards, and third-party SaaS integrations instead of custom-built billing engines.</li>
+        <li><strong>Toxic Debt (Never Acceptable):</strong> Flawed database schema design, lack of transactional boundaries, ignoring relational foreign key constraints, and missing security/authentication validation.</li>
+      </ul>
+
+      <!-- AdSense Slot (Mid) -->
+      <div class="ad-slot-container" id="ad-article-mid">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">In-Content Fluid Ad (AdSense Slot)</div>
+      </div>
+
+      <h2 id="modular-foundation">3. Building a 'Debt-Aware' MVP</h2>
+      <p>
+        At Arvaan Core Logic, when we engineer MVPs for fast-growing ventures, we follow a <strong>Modular Foundation Blueprint</strong>:
+      </p>
+      <ol>
+        <li><strong>Strict Data Modeling:</strong> Spend time getting the entity relationships right in PostgreSQL. Refactoring application code is easy; migrating terabytes of unstructured, inconsistent database tables while in production is painful and expensive.</li>
+        <li><strong>Automated Smoke Tests:</strong> Write automated end-to-end smoke tests for the core money-making flow (e.g. signup, cart, payment). If that breaks, you know immediately.</li>
+        <li><strong>Isolate Third-Party APIs Behind Adapters:</strong> Never call Stripe, Twilio, or SendGrid directly from your domain logic. Wrap them in clean internal interfaces so that changing vendors requires updating one file rather than twenty.</li>
+      </ol>
+
+      <div class="takeaway-box">
+        <div class="takeaway-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Strategic Advice for Founders
+        </div>
+        <p>A successful MVP is not an excuse for bad engineering. If you intend to build an enduring enterprise, treat your core logic as the foundation it truly is.</p>
+      </div>
+
+      <!-- Author Bio Box -->
+      <section class="author-bio-card">
+        <div class="author-bio-avatar" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">SA</div>
+        <div class="author-bio-text">
+          <h4>Shruti Agarwal</h4>
+          <span class="author-bio-role">Head of Product Strategy</span>
+          <p>Shruti helps high-growth startups and enterprises translate complex business models into clear engineering requirements and scalable digital products.</p>
+        </div>
+      </section>
+
+      <!-- Pagination / Next Articles -->
+      <nav class="article-nav-row">
+        <a href="blog-terraform-best-practices.html" class="article-nav-card">
+          <span class="nav-dir">&larr; Previous Article</span>
+          <span class="nav-title">Terraform Best Practices: Infrastructure That Doesn't Break</span>
+        </a>
+        <a href="blog-microservices.html" class="article-nav-card">
+          <span class="nav-dir">Next Article &rarr;</span>
+          <span class="nav-title">Microservices vs Monolith in 2026: When to Break It Up</span>
+        </a>
+      </nav>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="article-sidebar">
+      <div class="sidebar-widget">
+        <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Table of Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#the-false-dichotomy">1. The Speed vs Quality Dichotomy</a></li>
+          <li><a href="#toxic-vs-benign-debt">2. Toxic vs Benign Debt</a></li>
+          <li><a href="#modular-foundation">3. Building a Debt-Aware MVP</a></li>
+        </ul>
+      </div>
+
+      <!-- AdSense Slot (Sidebar) -->
+      <div class="ad-slot-container" id="ad-article-sidebar">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder" style="min-height:250px;">300x250 Medium Rectangle (AdSense Slot)</div>
+      </div>
+
+      <div class="sidebar-widget sidebar-cta">
+        <h4>Build Your Next Product</h4>
+        <p>Ready to engineer an MVP with production-grade architecture from Day 1? Contact our software development team.</p>
+        <a href="contact.html?service=enterprise" class="btn-primary" style="display:inline-flex;padding:0.6rem 1.25rem;font-size:0.875rem;">Start MVP Discovery</a>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+</body>
+</html>

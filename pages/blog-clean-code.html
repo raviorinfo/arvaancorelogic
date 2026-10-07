@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Clean Code Principles That Senior Engineers Actually Follow: Beyond dogmatic rules to pragmatic readability, locality of behavior, defensive design, and maintainable systems."/>
+  <title>Clean Code Principles That Senior Engineers Actually Follow — Arvaan Core Logic</title>
+  <link rel="stylesheet" href="../css/global.css?v=2.7"/>
+  <link rel="stylesheet" href="../css/article.css?v=2.7"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Clean Code Principles That Senior Engineers Actually Follow",
+    "description": "Pragmatic software craftsmanship: Why readability trumps cleverness, the perils of premature abstraction, and patterns for real-world enterprise maintainability.",
+    "author": {
+      "@type": "Person",
+      "name": "Arvaan Rao",
+      "jobTitle": "Founder & CTO"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Arvaan Core Logic"
+    },
+    "datePublished": "2026-02-18",
+    "dateModified": "2026-10-07"
+  }
+  </script>
+</head>
+<body data-page="blog">
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<!-- ARTICLE HERO -->
+<header class="article-hero">
+  <div class="container">
+    <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span class="sep">/</span>
+      <a href="blog.html">Insights</a>
+      <span class="sep">/</span>
+      <span>Engineering</span>
+    </nav>
+    <div class="article-header-meta">
+      <span class="tag tag-blue">Engineering</span>
+      <span class="tag tag-green">Software Craftsmanship</span>
+      <time datetime="2026-02-18" style="color:var(--text-3);font-size:0.875rem;">February 18, 2026</time>
+    </div>
+    <h1 class="article-title">Clean Code Principles That Senior Engineers Actually Follow</h1>
+    <div class="article-author-row">
+      <div class="article-author">
+        <div class="article-avatar" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)">AR</div>
+        <div class="article-author-info">
+          <strong>Arvaan Rao</strong>
+          <span>CTO &amp; Systems Architect</span>
+        </div>
+      </div>
+      <div class="article-stats">
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>8 min read</span>
+        </div>
+        <div class="article-stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <span>Code Quality</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ARTICLE MAIN CONTENT -->
+<section class="article-section">
+  <div class="container article-layout">
+    
+    <main class="article-body">
+      <p class="article-lead">
+        Much of the classic advice around "Clean Code"—such as never letting a function exceed 10 lines or creating an interface for every single class—often does more harm than good in modern enterprise production. Senior engineers recognize that maintainability is about cognitive load, predictability, and ease of modification.
+      </p>
+
+      <!-- AdSense Slot (Top) -->
+      <div class="ad-slot-container" id="ad-article-top">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">Responsive In-Article Banner (AdSense Slot)</div>
+      </div>
+
+      <h2 id="locality-of-behavior">1. Locality of Behavior over Dogmatic DRY</h2>
+      <p>
+        The Don't Repeat Yourself (DRY) principle is one of the first heuristics junior engineers learn. However, dogmatic DRY frequently leads to the worst kind of technical debt: <strong>premature abstraction</strong>. When two superficially similar routines are forced into a single generic helper, the helper quickly accumulates boolean flags, conditional branches, and edge-case exceptions.
+      </p>
+      <p>
+        Senior engineers prefer <em>Locality of Behavior (LoB)</em>: keeping related logic close together so that another engineer can read a file from top to bottom without jumping through seven levels of indirection. Duplication is far cheaper than the wrong abstraction.
+      </p>
+
+      <h2 id="naming-intent">2. Naming for Business Intent, Not Mechanical Implementation</h2>
+      <p>
+        Names in software should reveal intent and domain context rather than the underlying data structure:
+      </p>
+      <ul>
+        <li><strong>Avoid:</strong> <code>userListArray</code>, <code>handleData()</code>, <code>processInfo()</code></li>
+        <li><strong>Prefer:</strong> <code>activeSubscribers</code>, <code>reconcileBillingDiscrepancies()</code>, <code>verifyEmailToken()</code></li>
+      </ul>
+      <p>
+        If a variable name requires a comment above it to explain what it represents, the variable is poorly named.
+      </p>
+
+      <!-- AdSense Slot (Mid) -->
+      <div class="ad-slot-container" id="ad-article-mid">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder">In-Content Fluid Ad (AdSense Slot)</div>
+      </div>
+
+      <h2 id="return-early-pattern">3. The Guard Clause &amp; Return Early Pattern</h2>
+      <p>
+        Deeply nested <code>if-else</code> structures create unnecessary mental indentation and force developers to track multiple branches simultaneously. Inverting conditionals into early returns keeps the "happy path" flat and readable:
+      </p>
+
+      <div class="code-box">
+        <div class="code-header">
+          <span>auth.handler.ts — Flat Control Flow</span>
+          <span class="lang-tag">TypeScript</span>
+        </div>
+        <pre><code>// Clean: Guard clauses exit immediately upon invalid conditions
+async function authenticateRequest(req: Request): Promise&lt;SessionUser&gt; {
+  const token = req.headers.get('authorization')?.replace('Bearer ', '');
+  if (!token) {
+    throw new UnauthorizedError('Missing bearer token');
+  }
+
+  const payload = await verifyJwtSignature(token);
+  if (!payload || payload.isExpired) {
+    throw new UnauthorizedError('Token is expired or invalid');
+  }
+
+  const user = await userRepo.findById(payload.sub);
+  if (!user || user.isSuspended) {
+    throw new ForbiddenError('Account is suspended or deactivated');
+  }
+
+  // The happy path remains un-nested and easy to follow
+  return user;
+}</code></pre>
+      </div>
+
+      <h2 id="defensive-typing">4. Parse, Don't Validate</h2>
+      <p>
+        Traditional validation checks data and returns a boolean. If valid, the code passes the unvalidated object downstream, meaning subsequent functions have no guarantee that the data remains pristine.
+      </p>
+      <p>
+        Modern clean code uses schema parsers (such as Zod in TypeScript, Pydantic in Python, or Serde in Rust) to <strong>parse raw input into strongly typed domain objects at the system boundary</strong>. Once parsed, the rest of the application can safely rely on the compiler without defensive re-checking.
+      </p>
+
+      <div class="takeaway-box">
+        <div class="takeaway-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Senior Engineering Mantras
+        </div>
+        <ul>
+          <li>Code is read ten times more often than it is written. Optimize for readability over briefness.</li>
+          <li>Write code that is easy to delete, not code that is impossible to replace.</li>
+          <li>Tests are the ultimate documentation. A clean test suite explains the business domain better than a wiki.</li>
+        </ul>
+      </div>
+
+      <!-- Author Bio Box -->
+      <section class="author-bio-card">
+        <div class="author-bio-avatar" style="background:linear-gradient(135deg,#3B82F6,#06B6D4)">AR</div>
+        <div class="author-bio-text">
+          <h4>Arvaan Rao</h4>
+          <span class="author-bio-role">Chief Technology Officer &amp; Founder</span>
+          <p>Arvaan guides engineering best practices, architectural reviews, and delivery standards across all enterprise client projects at Arvaan Core Logic.</p>
+        </div>
+      </section>
+
+      <!-- Pagination / Next Articles -->
+      <nav class="article-nav-row">
+        <a href="blog-kubernetes.html" class="article-nav-card">
+          <span class="nav-dir">&larr; Previous Article</span>
+          <span class="nav-title">Kubernetes in Production: What They Don't Tell You</span>
+        </a>
+        <a href="blog-event-driven.html" class="article-nav-card">
+          <span class="nav-dir">Next Article &rarr;</span>
+          <span class="nav-title">Event-Driven Architecture: A Practical Guide</span>
+        </a>
+      </nav>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="article-sidebar">
+      <div class="sidebar-widget">
+        <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Table of Contents</h4>
+        <ul class="toc-list">
+          <li><a href="#locality-of-behavior">1. Locality of Behavior over DRY</a></li>
+          <li><a href="#naming-intent">2. Naming for Business Intent</a></li>
+          <li><a href="#return-early-pattern">3. The Guard Clause Pattern</a></li>
+          <li><a href="#defensive-typing">4. Parse, Don't Validate</a></li>
+        </ul>
+      </div>
+
+      <!-- AdSense Slot (Sidebar) -->
+      <div class="ad-slot-container" id="ad-article-sidebar">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-placeholder" style="min-height:250px;">300x250 Medium Rectangle (AdSense Slot)</div>
+      </div>
+
+      <div class="sidebar-widget sidebar-cta">
+        <h4>Codebase Refactoring</h4>
+        <p>Is legacy technical debt stalling your team's velocity? We help scale-ups refactor complex codebases into clean architectures.</p>
+        <a href="contact.html?service=enterprise" class="btn-primary" style="display:inline-flex;padding:0.6rem 1.25rem;font-size:0.875rem;">Schedule Review</a>
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<script src="../js/core.js"></script>
+</body>
+</html>

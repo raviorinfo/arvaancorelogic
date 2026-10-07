@@ -23,11 +23,10 @@
 .pf-btn:hover { color: var(--text); border-color: var(--border-2); }
 .pf-btn.active { background: var(--grad-cta); color: #fff; border-color: transparent; box-shadow: 0 2px 14px rgba(37,99,235,0.35); }
 
-.portfolio-section { }
 .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
 .projects-grid.hidden-item { display: none; }
 
-.proj-card { overflow: hidden; transition: border-color var(--dur-base), transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base); }
+.proj-card { overflow: hidden; transition: border-color var(--dur-base), transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base); cursor: pointer; }
 .proj-card.filtered-out { display: none; }
 .proj-img-wrap { position: relative; overflow: hidden; }
 .proj-img { width: 100%; height: 200px; object-fit: cover; transition: transform 0.6s var(--ease-out); }
@@ -54,6 +53,8 @@
   font-weight: 700;
   border-radius: var(--radius-sm);
   font-family: var(--font-display);
+  border: none;
+  cursor: pointer;
 }
 
 .proj-body { padding: 1.5rem; }
@@ -69,5 +70,132 @@
 
 .proj-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 
+/* ── Case Study Modal ── */
+.cs-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease-out);
+}
+.cs-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.cs-modal {
+  background: var(--bg-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-xl);
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s var(--ease-spring);
+  position: relative;
+}
+.cs-modal-backdrop.active .cs-modal {
+  transform: translateY(0) scale(1);
+}
+.cs-modal-header {
+  padding: 2rem 2.5rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.cs-modal-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+}
+.cs-modal-close {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all var(--dur-fast);
+  flex-shrink: 0;
+}
+.cs-modal-close:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.cs-modal-body {
+  padding: 2rem 2.5rem;
+  color: var(--text-2);
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+.cs-modal-body h4 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 1.75rem 0 0.6rem;
+}
+.cs-modal-body h4:first-child {
+  margin-top: 0;
+}
+.cs-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.cs-metric-box {
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+.cs-metric-val {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+}
+.cs-metric-label {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.cs-modal-footer {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--surface);
+}
+
 @media (max-width: 1024px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px)  { .projects-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { 
+  .projects-grid { grid-template-columns: 1fr; }
+  .cs-modal-header, .cs-modal-body, .cs-modal-footer { padding: 1.25rem 1.5rem; }
+}
